@@ -140,7 +140,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 
 <section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
  <div class="row" style="justify-content:center"><a class="btn fill" id="dir" href="#" target="_blank" rel="noopener">Get directions on Google Maps</a></div>
- <h3 class="nh">Things to do nearby</h3><div class="near" id="near"></div>
+ <h3 class="nh">Things to do nearby, after wedding offcourse!!</h3><div class="near" id="near"></div>
  <p class="note">Nearby activities and resort games are optional and paid for by the guests themselves. They are not arranged or covered by us.</p></section>
 
 <section id="rsvp"><h2>RSVP</h2><p class="sub" id="rsvpsub"></p>
@@ -153,7 +153,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
   <label><input type="radio" name="attending" value="Declines"><span>Regretfully declines</span></label></div><div class="err" id="e-att"></div></fieldset>
  <div id="more" hidden>
   <div><label for="count-g">Total guests in your party (including you)</label><div class="guest-stepper"><button type="button" id="guest-minus" aria-label="Remove one guest">−</button><input id="count-g" name="guests" type="number" min="1" value="1" readonly aria-live="polite"><button type="button" id="guest-plus" aria-label="Add one guest">+</button></div></div>
-  <div><label for="members">Names of accompanying family members and dietary needs</label><textarea id="members" name="members" rows="3" placeholder="List accompanying guests and any dietary needs"></textarea></div>
+  <div><label for="members">Names of accompanying family members </label><textarea id="members" name="members" rows="3" placeholder="List accompanying guests and any dietary needs"></textarea></div>
  </div>
  <button class="btn fill" type="submit" id="send">Send RSVP</button><div class="err" id="e-form" role="alert"></div>
 </form>
@@ -190,13 +190,10 @@ const CONFIG={
   ["Resort fun activities","Make the most of resort games and recreational activities during your free time."]],
  faq:[
   ["Where is the venue?","Sneh Resort, Pune. Use the Get Directions button in the Venue section for Google Maps."],
-  ["Are children allowed?","Yes, children are welcome."],
   ["Is parking available?","Yes, free parking is available at the resort."],
   ["Who pays for extra activities?","Optional activities such as boating, water activities, trails, and resort games are at guests’ own cost and are subject to availability."],
   ["What are the event dress codes?","Haldi: shades of yellow. Sangeet: sparkly Indo-western. Wedding: colourful Indian traditional attire; please avoid white and black."],
-  ["Can I bring family members?","Absolutely. Please use the + / − guest counter in the RSVP form to tell us how many people are attending."],
-  ["Will there be vegetarian food?","Please share any dietary needs or allergies in your RSVP so the hosts can take note."],
-  ["Is the pool available during Haldi?","Haldi is poolside, but please do not jump into the pool."]]};
+  ["Is the pool available during Haldi?","Not during Haldi, feel free to use the pool otherwise"]]};
 /* ======================================================= */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const C=CONFIG,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
