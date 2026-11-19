@@ -48,6 +48,19 @@ h2{font-size:clamp(2.1rem,6vw,3.2rem);text-align:center;margin-bottom:.4rem}
 .btn.fill{background:var(--vermilion);border-color:var(--vermilion);color:#fff}.btn.fill:hover{background:#8a251f}
 .map{margin-top:2rem;text-align:center;color:var(--soft)}
 @media(max-width:600px){#events .panel{width:min(100%,360px);aspect-ratio:9/16;min-height:0;border-radius:16px}}
+/* EVENT SUMMARY */
+.event-summary{margin:2.8rem auto 0;max-width:900px;padding:clamp(1.1rem,3vw,2rem);background:rgba(255,251,244,.94);backdrop-filter:blur(12px);border:1px solid rgba(224,146,43,.35);border-radius:22px;box-shadow:0 16px 42px rgba(93,42,28,.12)}
+.event-summary h3{text-align:center;font-size:clamp(1.7rem,4vw,2.25rem);margin-bottom:1rem;color:var(--vermilion)}
+.event-summary table{width:100%;border-collapse:collapse;text-align:left}
+.event-summary th{font:600 .82rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:.75rem .8rem;border-bottom:1px solid var(--line)}
+.event-summary td{padding:.85rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+.event-summary tr:last-child td{border-bottom:0}.event-summary td:first-child{font-weight:600;font-family:var(--serif);font-size:1.2rem}
+/* RSVP POPUP */
+.rsvp-invite{max-width:760px;margin:0 auto;padding:1.3rem 1.5rem;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(224,146,43,.35);border-radius:18px;text-align:center;box-shadow:0 12px 35px rgba(93,42,28,.1)}
+.rsvp-invite p{color:var(--soft);margin-bottom:.8rem}.rsvp-modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:1rem;background:rgba(25,14,18,.68);backdrop-filter:blur(7px);overflow-y:auto}
+.rsvp-modal[hidden]{display:none}.rsvp-modal-inner{position:relative;width:min(100%,720px);max-height:92svh;overflow-y:auto;padding:1rem;background:rgba(246,239,227,.98);border:1px solid rgba(224,146,43,.55);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.35)}
+.rsvp-modal-inner #rsvp{padding:1.2rem .5rem 1.5rem}.rsvp-close{position:sticky;top:0;float:right;z-index:2;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:#fffaf0;color:var(--ink);font-size:1.4rem;cursor:pointer}
+@media(max-width:560px){.event-summary{padding:.85rem;border-radius:16px}.event-summary th,.event-summary td{padding:.65rem .4rem;font-size:.82rem}.event-summary td:first-child{font-size:1rem}.rsvp-modal-inner{padding:.65rem}.rsvp-modal-inner #rsvp{padding:.8rem .15rem 1rem}}
 /* RSVP */
 form{max-width:560px;margin:auto;background:rgba(255,251,244,.96);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:1.8rem;display:grid;gap:1.1rem}
 label,legend{font-weight:600;font-size:.9rem}
@@ -120,11 +133,11 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
  <div class="curtain-valance" aria-hidden="true"></div>
  <div class="curtain-ornament"><div class="curtain-seal">ॐ</div><p class="eyebrow">Together with our families</p><h2>Pushkar &amp; Vaishnavi</h2><p>Invite you to celebrate their wedding</p><button class="curtain-open" id="open-curtain" type="button">✦ &nbsp; Tap to open &nbsp; ✦</button></div>
 </div>
-<audio id="wedding-music" src="assets/wedding-song.mp3" preload="none" loop></audio>
+<audio id="wedding-music" src="assets/background.mp3" preload="none" loop></audio>
 <button id="music-toggle" type="button" aria-label="Mute background music" title="Mute / unmute music">♫</button>
 <canvas id="fx" aria-hidden="true"></canvas>
 <nav aria-label="Main"><ul>
-<li><a href="#hero">Home</a></li><li><a href="#events">Events</a></li><li><a href="#venue">Venue</a></li><li><a href="#rsvp">RSVP</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
+<li><a href="#hero">Home</a></li><li><a href="#events">Events</a></li><li><a href="#venue">Venue</a></li><li><a href="#rsvp" id="nav-rsvp">RSVP</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
 <main>
 <!-- HERO: folding card with mandap-style arch -->
 <section id="hero" aria-label="Invitation">
@@ -135,15 +148,13 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
  <div class="count" id="count" role="timer" aria-live="off"></div>
 </section>
 
-<section id="events"><h2>Celebrations</h2><p class="sub">Select an event to watch</p>
- <div class="tabs" role="tablist" id="tabs"></div><div class="panel" id="panel" role="tabpanel" tabindex="0" aria-label="Selected event video"></div></section>
+<section id="rsvp-prompt" aria-label="RSVP invitation" style="padding-top:1.5rem;padding-bottom:1.5rem">
+ <div class="rsvp-invite"><h2 style="font-size:clamp(1.8rem,5vw,2.5rem)">Kindly RSVP</h2><p>Your response will help us make the celebrations special. Please take a moment to fill in the RSVP form — we request everyone to respond by the deadline.</p><button class="btn fill" id="open-rsvp" type="button">✦ &nbsp; Fill RSVP</button></div>
+</section>
 
-<section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
- <div class="row" style="justify-content:center"><a class="btn fill" id="dir" href="#" target="_blank" rel="noopener">Get directions on Google Maps</a></div>
- <h3 class="nh">Things to do nearby, after wedding offcourse!!</h3><div class="near" id="near"></div>
- <p class="note">Nearby activities and resort games are optional and paid for by the guests themselves. They are not arranged or covered by us.</p></section>
-
-<section id="rsvp"><h2>RSVP</h2><p class="sub" id="rsvpsub"></p>
+<div class="rsvp-modal" id="rsvp-modal" hidden role="dialog" aria-modal="true" aria-labelledby="rsvp-title">
+ <div class="rsvp-modal-inner"><button class="rsvp-close" id="close-rsvp" type="button" aria-label="Close RSVP">×</button>
+ <section id="rsvp"><h2 id="rsvp-title">RSVP</h2><p class="sub" id="rsvpsub"></p>
 <form id="form" novalidate>
  <!-- Honeypot: hidden from people, bots fill it in -->
  <input class="hp" type="text" name="website" style="display:none;" tabindex="-1" autocomplete="off">
@@ -153,11 +164,26 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
   <label><input type="radio" name="attending" value="Declines"><span>Regretfully declines</span></label></div><div class="err" id="e-att"></div></fieldset>
  <div id="more" hidden>
   <div><label for="count-g">Total guests in your party (including you)</label><div class="guest-stepper"><button type="button" id="guest-minus" aria-label="Remove one guest">−</button><input id="count-g" name="guests" type="number" min="1" value="1" readonly aria-live="polite"><button type="button" id="guest-plus" aria-label="Add one guest">+</button></div></div>
-  <div><label for="members">Names of accompanying family members </label><textarea id="members" name="members" rows="3" placeholder="List accompanying guests and any dietary needs"></textarea></div>
+  <div><label for="members">Names of accompanying family members and dietary needs</label><textarea id="members" name="members" rows="3" placeholder="List accompanying guests and any dietary needs"></textarea></div>
  </div>
  <button class="btn fill" type="submit" id="send">Send RSVP</button><div class="err" id="e-form" role="alert"></div>
 </form>
-<div class="panel done" id="done" hidden><h3>Thank you!</h3><p id="donemsg"></p></div></section>
+<div class="panel done" id="done" hidden><h3>Thank you!</h3><p id="donemsg"></p></div></section></div>
+</div>
+
+<section id="events"><h2>Celebrations</h2><p class="sub">Select an event to watch</p>
+ <div class="tabs" role="tablist" id="tabs"></div><div class="panel" id="panel" role="tabpanel" tabindex="0" aria-label="Selected event video"></div>
+ <div class="event-summary"><h3>Event Schedule</h3><table><thead><tr><th>Event</th><th>Date &amp; time</th><th>Dress code</th></tr></thead><tbody>
+ <tr><td>Haldi</td><td>14 February 2027<br>4:30 PM</td><td>Pastel shades of Green/Blue/Pink</td></tr>
+ <tr><td>Sangeet</td><td>14 February 2027<br>7:30 PM</td><td>Sparkly Indo-western</td></tr>
+ <tr><td>Wedding — Vidhi</td><td>15 February 2027<br>7:30 AM</td><td rowspan="2">Colourful Indian traditional attire<br><span style="font-size:.82rem;color:var(--soft)">Please avoid white and black</span></td></tr>
+ <tr><td>Wedding — Mangalashtak</td><td>15 February 2027<br>11:15 AM</td></tr>
+ </tbody></table></div></section>
+
+<section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
+ <div class="row" style="justify-content:center"><a class="btn fill" id="dir" href="#" target="_blank" rel="noopener">Get directions on Google Maps</a></div>
+ <h3 class="nh">Things to do nearby. After the wedding ofcourse!!</h3><div class="near" id="near"></div>
+ <p class="note">Nearby activities and resort games are optional and paid for by the guests themselves. They are not arranged or covered by us.</p></section>
 
 <section id="faq"><h2>Good to Know</h2><p class="sub">&nbsp;</p><div id="faqs"></div></section>
 </main>
@@ -170,7 +196,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 /* ============ CONFIG: edit everything here ============ */
 const MAP="https://maps.app.goo.gl/mgoWZFRYnHqiEXbWA";
 const CONFIG={
- names:["Pushkar","Vaishnavi"], cityLine:"Sneh Resort", hashtag:"#PushkarWedsVaishnavi",
+ names:["Pushkar","Vaishnavi"], cityLine:"Sneh Resort", hashtag:"Pushkar & Vaishnavi",
  weddingDate:"2027-02-15T11:30:00",           // countdown target (local time).
  displayDate:"14 – 15 February 2027",
  /* Paste your Google Apps Script Web App URL (ends in /exec) below. Formspree URL also works. */
@@ -180,7 +206,7 @@ const CONFIG={
  heroImages:[],
  venueName:"Sneh Resort, Pune", mapLink:MAP,
  events:[
-  {name:"Haldi",video:"assets/haldi.mp4",date:"2027-02-14",start:"16:30",end:"19:00",venue:"Poolside — please do not jump into the pool",addr:"Sneh Resort, Pune",dress:"Shades of yellow",map:MAP},
+  {name:"Haldi",video:"assets/haldi.mp4",date:"2027-02-14",start:"16:30",end:"19:00",venue:"Poolside — please do not jump into the pool",addr:"Sneh Resort, Pune",dress:"Pastel shades of Green/Blue/Pink",map:MAP},
   {name:"Sangeet",video:"assets/sangeet.mp4",date:"2027-02-14",start:"19:30",end:"23:00",venue:"Banquet Hall",addr:"Sneh Resort, Pune",dress:"Indo-western and sparkly",map:MAP},
   {name:"Wedding",video:"assets/wedding.mp4",date:"2027-02-15",start:"08:30",end:"13:30",venue:"Main event at 11:30 AM onwards",addr:"Sneh Resort, Pune",dress:"Colourful Indian traditional attire; please avoid white and black",map:MAP}],
  nearby:[
@@ -192,8 +218,9 @@ const CONFIG={
   ["Where is the venue?","Sneh Resort, Pune. Use the Get Directions button in the Venue section for Google Maps."],
   ["Is parking available?","Yes, free parking is available at the resort."],
   ["Who pays for extra activities?","Optional activities such as boating, water activities, trails, and resort games are at guests’ own cost and are subject to availability."],
-  ["What are the event dress codes?","Haldi: shades of yellow. Sangeet: sparkly Indo-western. Wedding: colourful Indian traditional attire; please avoid white and black."],
-  ["Is the pool available during Haldi?","Not during Haldi, feel free to use the pool otherwise"]]};
+  ["What are the event dress codes?","Haldi: Pastel shades of Green/Blue/Pink || Sangeet: sparkly Indo-western || Wedding: colourful Indian traditional attire."],
+  ["Can I bring family members?","Absolutely. Please use the + / − guest counter in the RSVP form to tell us how many people are attending."],
+  ["Is the pool available during Haldi?","Not during Haldi. But feel free to use otherwise following resort guidelines"]]};
 /* ======================================================= */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const C=CONFIG,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -250,6 +277,17 @@ $('#venueName').textContent=C.venueName;$('#dir').href=C.mapLink;
 $('#near').innerHTML=C.nearby.map(([t,d])=>`<article class="rv"><h3>${t}</h3><p>${d}</p></article>`).join('');
 // Hero backdrops (crossfade if more than one)
 // The supplied portrait backdrop is static across the whole application.
+
+// RSVP popup controls (form submission logic below is intentionally unchanged)
+(function(){
+ const modal=$('#rsvp-modal'),openers=[$('#open-rsvp'),$('#nav-rsvp')],close=$('#close-rsvp');
+ function open(){modal.hidden=false;document.body.style.overflow='hidden';$('#name').focus()}
+ function shut(){modal.hidden=true;document.body.style.overflow='';}
+ openers.forEach(el=>el&&el.addEventListener('click',e=>{e.preventDefault();open()}));
+ close.addEventListener('click',shut);
+ modal.addEventListener('click',e=>{if(e.target===modal)shut()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)shut()});
+})();
 
 // RSVP
 const f=$('#form'),att=()=>f.attending.value;
