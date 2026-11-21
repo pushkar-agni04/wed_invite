@@ -23,19 +23,20 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: -15vh -12vw;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
 
-  background-image:
+  background:
     linear-gradient(
       rgba(255,250,239,.50),
       rgba(255,250,239,.50)
     ),
-    url("assets/wedding-backdrop.png");
-
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+    url("assets/wedding-backdrop.png")
+    center center / cover no-repeat;
 
   pointer-events: none;
 }
@@ -208,7 +209,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 <section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
  <div class="venue-photo-card"><img src="assets/venue-location.png" alt="Sneh Resort venue" loading="lazy"><a class="btn fill venue-directions" id="dir" href="#" target="_blank" rel="noopener">Get Directions</a></div>
  <!-- <h3 class="nh">Things to do nearby. After the wedding ofcourse!!</h3><div class="near" id="near"></div> -->
- <p class="note"><strong>Nearby activities and resort games are optional and paid for by the guests themselves. They are not arranged or covered by us.</strong></p></section>
+ <p class="note"><strong>Nearby resort activities are optional and paid for by the guests themselves. They are not arranged or covered by us.</strong></p></section>
 
 <section id="faq"><h2>Good to Know</h2><p class="sub">&nbsp;</p><div id="faqs"></div></section>
 </main>
