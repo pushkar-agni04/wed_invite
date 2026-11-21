@@ -14,32 +14,7 @@
 --glass:rgba(255,251,244,.90);--line:rgba(43,42,46,.14);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Plus Jakarta Sans',system-ui,sans-serif;--hi:'Tiro Devanagari Hindi','Cormorant Garamond',serif}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:70px}
 body{background:#f6efe3;color:var(--ink);font:400 1rem/1.7 var(--sans);overflow-x:hidden;position:relative}
-/* body{isolation:isolate}body::before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(rgba(255,250,239,.50),rgba(255,250,239,.50)),url("assets/wedding-backdrop.png") center center/cover no-repeat;pointer-events:none;transform:translateZ(0);will-change:transform;contain:strict} */
-body {
-  isolation: isolate;
-  background: #f8c9a0;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100lvh;
-  z-index: -1;
-
-  background:
-    linear-gradient(
-      rgba(255,250,239,.50),
-      rgba(255,250,239,.50)
-    ),
-    url("assets/wedding-backdrop.png")
-    center center / cover no-repeat;
-
-  pointer-events: none;
-}
+body{isolation:isolate}body::before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(rgba(255,250,239,.50),rgba(255,250,239,.50)),url("assets/wedding-backdrop.png") center center/cover no-repeat;pointer-events:none;transform:translateZ(0);will-change:transform;contain:strict}
 canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 main,footer,nav{position:relative;z-index:1}
 a{color:inherit}h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1}
@@ -133,8 +108,29 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 .inv h1 span,.inv h1 em{display:block}.inv h1 em{font-size:.62em;margin:.1em 0;color:var(--marigold)}
 .inv .dt{font:600 4.8cqw var(--serif);margin-top:3.5cqw}.inv .vn{font-size:3.4cqw;color:#5b3a3f}
 
+/* Page reveal is timed with the full curtain movement. Keep transitions on
+   the initial state so opacity and clarity begin changing on the very first frame. */
+main, nav, footer {
+  transition:
+    opacity 2.05s cubic-bezier(.25,.1,.25,1),
+    filter 2.05s cubic-bezier(.25,.1,.25,1);
+  will-change: opacity, filter;
+}
+body:not(.page-revealing) main,
+body:not(.page-revealing) nav,
+body:not(.page-revealing) footer {
+  opacity: .16;
+  filter: blur(8px);
+}
+body.page-revealing main,
+body.page-revealing nav,
+body.page-revealing footer {
+  opacity: 1;
+  filter: blur(0);
+}
+
 /* ROYAL CURTAIN ENTRANCE */
-#wedding-curtain{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:#310d18;isolation:isolate}
+#wedding-curtain{position:fixed;inset:0;z-index:1000;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:rgba(35,10,17,.24);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);isolation:isolate;transition:background-color 2.05s linear,backdrop-filter 2.05s linear,-webkit-backdrop-filter 2.05s linear}
 .curtain-panel{position:relative;min-width:0;height:100%;background:linear-gradient(90deg,#4a1020 0%,#861e32 13%,#a92c3d 27%,#761629 48%,#4b1020 72%,#74172a 100%);box-shadow:inset 0 0 70px rgba(20,0,0,.58);transition:transform 2.05s cubic-bezier(.78,0,.18,1);will-change:transform}
 .curtain-panel::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,220,165,.10) 0,rgba(255,220,165,.025) 7%,rgba(20,0,0,.18) 14%,rgba(255,230,190,.08) 22%,transparent 31%);mix-blend-mode:screen}
 .curtain-panel::after{content:"";position:absolute;top:0;bottom:0;width:12px;background:linear-gradient(90deg,rgba(255,218,155,.45),rgba(255,255,255,.08),rgba(20,0,0,.25));filter:blur(1px)}
@@ -147,7 +143,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 .curtain-ornament p{font:italic 1.05rem var(--serif);color:#f1dcb8;margin-bottom:1.4rem}
 .curtain-open{pointer-events:auto;border:1px solid #f1d18f;border-radius:999px;padding:.95rem 1.65rem;background:linear-gradient(135deg,#fff0c9,#dcae61);color:#5b1425;font:600 .88rem var(--sans);letter-spacing:.08em;text-transform:uppercase;box-shadow:0 8px 28px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.8);cursor:pointer;transition:transform .25s,box-shadow .25s}
 .curtain-open:hover{transform:translateY(-3px) scale(1.025);box-shadow:0 13px 34px rgba(0,0,0,.4)}.curtain-open:focus-visible{outline:3px solid white;outline-offset:5px}
-#wedding-curtain.open .left{transform:translateX(-105%)}#wedding-curtain.open .right{transform:translateX(105%)}#wedding-curtain.open .curtain-valance{transform:translateY(-110%);opacity:0}#wedding-curtain.open .curtain-ornament{opacity:0;transform:translate(-50%,-60%)}#wedding-curtain.open{pointer-events:none;visibility:hidden;transition:visibility 0s linear 2.1s}
+#wedding-curtain.open{background:rgba(35,10,17,0);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}#wedding-curtain.open .left{transform:translateX(-105%)}#wedding-curtain.open .right{transform:translateX(105%)}#wedding-curtain.open .curtain-valance{transform:translateY(-110%);opacity:0}#wedding-curtain.open .curtain-ornament{opacity:0;transform:translate(-50%,-60%)}#wedding-curtain.open{pointer-events:none;visibility:hidden;transition:visibility 0s linear 2.1s}
 #music-toggle{position:fixed;right:16px;bottom:16px;z-index:30;width:46px;height:46px;border:1px solid rgba(224,146,43,.65);border-radius:50%;background:rgba(255,251,244,.92);color:#8f2437;box-shadow:0 5px 18px rgba(60,20,20,.18);font-size:1.15rem;cursor:pointer;display:none}
 @media(prefers-reduced-motion:reduce){.curtain-panel{transition-duration:.01ms!important}.curtain-valance{transition-duration:.01ms!important}}
 
@@ -200,7 +196,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 <section id="events"><h2>Celebrations</h2><p class="sub">Select an event to watch</p>
  <div class="tabs" role="tablist" id="tabs"></div><div class="panel" id="panel" role="tabpanel" tabindex="0" aria-label="Selected event video"></div>
  <div class="event-summary"><h3>Event Schedule</h3><table><thead><tr><th>Event</th><th>Date &amp; time</th><th>Dress code</th></tr></thead><tbody>
- <tr><td>Haldi</td><td>14 February 2027<br>4:00 PM</td><td>Pastel shades of Green/Blue/Pink</td></tr>
+ <tr><td>Haldi</td><td>14 February 2027<br>3:00 PM</td><td>Pastel shades of Green/Blue/Pink</td></tr>
  <tr><td>Sangeet<br>Ring Ceremony</td><td>14 February 2027<br>7:30 PM</td><td>Sparkly Indo-western</td></tr>
  <tr><td>Wedding — Vidhi</td><td>15 February 2027<br>7:30 AM</td><td rowspan="2">Colourful Indian traditional attire<br><span style="font-size:.82rem;color:var(--soft)">Please avoid white and black</span></td></tr>
  <tr><td>Wedding — Mangalashtak</td><td>15 February 2027<br>11:15 AM</td></tr>
@@ -209,7 +205,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 <section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
  <div class="venue-photo-card"><img src="assets/venue-location.png" alt="Sneh Resort venue" loading="lazy"><a class="btn fill venue-directions" id="dir" href="#" target="_blank" rel="noopener">Get Directions</a></div>
  <!-- <h3 class="nh">Things to do nearby. After the wedding ofcourse!!</h3><div class="near" id="near"></div> -->
- <p class="note"><strong>Nearby resort activities are optional and paid for by the guests themselves. They are not arranged or covered by us.</strong></p></section>
+ <p class="note"><strong>Any nearby activities are optional and paid for by the guests themselves. They are not arranged or covered by us.</strong></p></section>
 
 <section id="faq"><h2>Good to Know</h2><p class="sub">&nbsp;</p><div id="faqs"></div></section>
 </main>
@@ -232,9 +228,9 @@ const CONFIG={
  heroImages:[],
  venueName:"Sneh Resort, Pune", mapLink:MAP,
  events:[
-  {name:"Haldi",video:"assets/haldi.mp4",date:"2027-02-14",start:"16:30",end:"19:00",venue:"Poolside — please do not jump into the pool",addr:"Sneh Resort, Pune",dress:"Pastel shades of Green/Blue/Pink",map:MAP},
-  {name:"Sangeet",video:"assets/sangeet.mp4",date:"2027-02-14",start:"19:30",end:"23:00",venue:"Banquet Hall",addr:"Sneh Resort, Pune",dress:"Indo-western and sparkly",map:MAP},
-  {name:"Wedding",video:"assets/wedding.mp4",date:"2027-02-15",start:"08:30",end:"13:30",venue:"Main event at 11:30 AM onwards",addr:"Sneh Resort, Pune",dress:"Colourful Indian traditional attire; please avoid white and black",map:MAP}],
+  {name:"Haldi",video:"assets/haldi.mp4",date:"2027-02-14",start:"15:00",end:"19:00",venue:"Poolside — please do not jump into the pool",addr:"Sneh Resort, Pune",dress:"Pastel shades of Green/Blue/Pink",map:MAP},
+  {name:"Sangeet",video:"assets/sangeet.mp4",date:"2027-02-14",start:"19:30",end:"23:00",venue:"Lawn",addr:"Sneh Resort, Pune",dress:"Indo-western and sparkly",map:MAP},
+  {name:"Wedding",video:"assets/wedding.mp4",date:"2027-02-15",start:"07:30",end:"14:00",venue:"Main event at 11:30 AM onwards",addr:"Sneh Resort, Pune",dress:"Colourful Indian traditional attire; please avoid white and black",map:MAP}],
  nearby:[
   ["Boating","Enjoy boating if available at the resort or nearby. Subject to availability and local conditions."],
   ["Water activities","Optional water activities may be available at or around the resort; please follow staff instructions and safety rules."],
@@ -266,6 +262,7 @@ if(window.gsap&&!reduce){gsap.timeline({defaults:{ease:'power2.out'}}).from('.in
  toggle.style.display='block';
  const syncMusic=()=>{toggle.textContent=audio.paused?'♫':'Ⅱ';toggle.setAttribute('aria-label',audio.paused?'Play background music':'Pause background music')};
  open.addEventListener('click',()=>{
+  document.body.classList.add('page-revealing');
   curtain.classList.add('open');open.disabled=true;
   audio.volume=.38;audio.play().then(syncMusic).catch(()=>syncMusic());
   if(reduce){curtain.remove();return}window.setTimeout(()=>curtain.remove(),2200);
@@ -283,13 +280,31 @@ tick();setInterval(tick,1000);
 // FAQ
 $('#faqs').innerHTML=C.faq.map(([q,a])=>`<details class="rv"><summary>${q}</summary><p>${a}</p></details>`).join('');
 
+// Preload the three small celebration clips in parallel without blocking the initial page render.
+// Detached muted video elements let the browser fetch/cache the files before guests switch tabs.
+(function preloadCelebrationVideos(){
+ window.__eventVideoPreloads=[];
+ const begin=()=>{
+  if(navigator.connection && navigator.connection.saveData) return;
+  C.events.forEach(e=>{
+   const v=document.createElement('video');
+   v.preload='auto';v.muted=true;v.playsInline=true;v.src=e.video;
+   v.setAttribute('aria-hidden','true');
+   v.load();
+   window.__eventVideoPreloads.push(v);
+  });
+ };
+ if('requestIdleCallback' in window) requestIdleCallback(begin,{timeout:1400});
+ else window.setTimeout(begin,500);
+})();
+
 // Events: tabs + calendar
 const fmt=(d,t)=>d.replace(/-/g,'')+'T'+t.replace(':','')+'00';
 const longDate=d=>new Date(d+'T00:00').toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const timeLabel=t=>{const [h,m]=t.split(':').map(Number);return `${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`};
 function showEvent(i){const e=C.events[i];
  $$('#tabs button').forEach((b,j)=>{b.setAttribute('aria-selected',j===i);b.tabIndex=j===i?0:-1});
- $('#panel').innerHTML=`<video class="event-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="${e.video}" type="video/mp4"></video><video class="event-video" autoplay muted loop playsinline preload="metadata" aria-label="${e.name} celebration video"><source src="${e.video}" type="video/mp4"></video>`;
+ $('#panel').innerHTML=`<video class="event-video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="${e.video}" type="video/mp4"></video><video class="event-video" autoplay muted loop playsinline preload="auto" aria-label="${e.name} celebration video"><source src="${e.video}" type="video/mp4"></video>`;
  $$('#panel video').forEach(v=>{v.load();const play=v.play();if(play&&play.catch)play.catch(()=>{});});
  if(window.gsap&&!reduce)gsap.from('#panel',{opacity:.75,duration:.35});}
 $('#tabs').innerHTML=C.events.map((e,i)=>`<button role="tab" aria-selected="false">${e.name}</button>`).join('');
@@ -310,6 +325,7 @@ $('#venueName').textContent=C.venueName;$('#dir').href=C.mapLink;
  function shut(){modal.hidden=true;document.body.style.overflow='';}
  openers.forEach(el=>el&&el.addEventListener('click',e=>{e.preventDefault();open()}));
  close.addEventListener('click',shut);
+ document.addEventListener('rsvp:success',()=>window.setTimeout(shut,3200));
  modal.addEventListener('click',e=>{if(e.target===modal)shut()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)shut()});
 })();
@@ -320,7 +336,9 @@ f.addEventListener('change',()=>{$('#more').hidden=att()!=='Accepts'});
 const guestInput=$('#count-g');$('#guest-minus').addEventListener('click',()=>{guestInput.value=Math.max(1,(+guestInput.value||1)-1)});$('#guest-plus').addEventListener('click',()=>{guestInput.value=(+guestInput.value||1)+1});
 function success(){f.hidden=true;$('#done').hidden=false;
  $('#donemsg').textContent=att()==='Accepts'?'We can\u2019t wait to celebrate with you.':'You\u2019ll be missed. Thank you for letting us know.';
- if(window.confetti&&!reduce){const o={colors:['#e0922b','#b76e79','#a8322a','#f3d9a0'],origin:{y:.7}};confetti({...o,particleCount:90,spread:70});setTimeout(()=>confetti({...o,particleCount:60,spread:100,scalar:.9}),300)}}
+ if(window.confetti&&!reduce){const o={colors:['#e0922b','#b76e79','#a8322a','#f3d9a0'],origin:{y:.7}};confetti({...o,particleCount:90,spread:70});setTimeout(()=>confetti({...o,particleCount:60,spread:100,scalar:.9}),300)}
+ document.dispatchEvent(new Event('rsvp:success'));
+}
 f.addEventListener('submit',async ev=>{ev.preventDefault();
  $('#e-name').textContent=$('#e-att').textContent=$('#e-form').textContent='';
  let bad=false;if(!f.name.value.trim()){$('#e-name').textContent='Please enter your full name.';bad=true}
