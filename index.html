@@ -14,8 +14,8 @@
 --glass:rgba(255,251,244,.90);--line:rgba(43,42,46,.14);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Plus Jakarta Sans',system-ui,sans-serif;--hi:'Tiro Devanagari Hindi','Cormorant Garamond',serif}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;scroll-padding-top:70px}
 body{background:#f6efe3;color:var(--ink);font:400 1rem/1.7 var(--sans);overflow-x:hidden;position:relative}
-body::before{content:"";position:fixed;inset:0;z-index:-2;background:linear-gradient(rgba(255,250,239,.50),rgba(255,250,239,.50)),url("assets/wedding-backdrop.png") center center/cover no-repeat;pointer-events:none}
-canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+body{isolation:isolate}body::before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(rgba(255,250,239,.50),rgba(255,250,239,.50)),url("assets/wedding-backdrop.png") center center/cover no-repeat;pointer-events:none;transform:translateZ(0);will-change:transform;contain:strict}
+canvas#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 main,footer,nav{position:relative;z-index:1}
 a{color:inherit}h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.1}
 :focus-visible{outline:3px solid var(--vermilion);outline-offset:3px;border-radius:6px}
@@ -88,6 +88,7 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
 .frame i:nth-child(1){left:-2px;top:-2px}.frame i:nth-child(2){right:-2px;top:-2px;transform:rotate(90deg)}.frame i:nth-child(3){right:-2px;bottom:-2px;transform:rotate(180deg)}.frame i:nth-child(4){left:-2px;bottom:-2px;transform:rotate(270deg)}
 /* VENUE */
 .where{list-style:none;padding:0;display:grid;gap:.8rem}.where li{display:grid;gap:.1rem;padding-bottom:.8rem;border-bottom:1px solid var(--line)}.where li:last-child{border:0}.where b{font:600 1.35rem var(--serif)}.where span{color:var(--soft);font-size:.9rem}
+.venue-photo-card{position:relative;width:min(100%,520px);aspect-ratio:3/4;margin:1.2rem auto 0;border-radius:22px;overflow:hidden;border:1px solid rgba(224,146,43,.42);box-shadow:0 20px 48px rgba(93,42,28,.22);background:#d9c7a9}.venue-photo-card img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}.venue-photo-card::after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(20,12,14,.58));pointer-events:none}.venue-directions{position:absolute;z-index:1;left:50%;bottom:1rem;transform:translateX(-50%);font-size:.78rem;padding:.55rem .95rem;white-space:nowrap;box-shadow:0 5px 18px rgba(0,0,0,.2);background:rgba(168,50,42,.94);border-color:rgba(255,255,255,.75);color:#fff}.venue-directions:hover{background:#8a251f;color:#fff;transform:translateX(-50%) translateY(-2px)}
 .nh{text-align:center;font-size:2rem;margin:3rem 0 1.2rem}.near{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
 .near article{background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:16px;padding:1.3rem;transition:.3s}.near article:hover{transform:translateY(-4px)}
 .near h3{font-size:1.4rem;margin-bottom:.3rem}.near p{color:var(--soft);font-size:.92rem}.note{text-align:center;color:var(--soft);font-size:.88rem;margin:1.4rem auto 0;max-width:560px}
@@ -181,8 +182,8 @@ footer{text-align:center;padding:4rem 1.25rem 3rem;border-top:1px solid var(--li
  </tbody></table></div></section>
 
 <section id="venue"><h2>Venue</h2><p class="sub" id="venueName"></p>
- <div class="row" style="justify-content:center"><a class="btn fill" id="dir" href="#" target="_blank" rel="noopener">Get directions on Google Maps</a></div>
- <h3 class="nh">Things to do nearby. After the wedding ofcourse!!</h3><div class="near" id="near"></div>
+ <div class="venue-photo-card"><img src="assets/venue-location.png" alt="Sneh Resort venue" loading="lazy"><a class="btn fill venue-directions" id="dir" href="#" target="_blank" rel="noopener">Get Directions</a></div>
+ <!-- <h3 class="nh">Things to do nearby. After the wedding ofcourse!!</h3><div class="near" id="near"></div> -->
  <p class="note"><strong>Nearby activities and resort games are optional and paid for by the guests themselves. They are not arranged or covered by us.</strong></p></section>
 
 <section id="faq"><h2>Good to Know</h2><p class="sub">&nbsp;</p><div id="faqs"></div></section>
@@ -273,7 +274,7 @@ $('#tabs').addEventListener('keydown',e=>{const bs=$$('#tabs button'),i=bs.findI
 showEvent(0);
 // Venue
 $('#venueName').textContent=C.venueName;$('#dir').href=C.mapLink;
-$('#near').innerHTML=C.nearby.map(([t,d])=>`<article class="rv"><h3>${t}</h3><p>${d}</p></article>`).join('');
+// $('#near').innerHTML=C.nearby.map(([t,d])=>`<article class="rv"><h3>${t}</h3><p>${d}</p></article>`).join('');
 // Hero backdrops (crossfade if more than one)
 // The supplied portrait backdrop is static across the whole application.
 
